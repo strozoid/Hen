@@ -42,8 +42,8 @@ jobs:
           
           git commit -m "Commit Hentai"
           
-      - name: GitHub Push
-        uses: ad-m/github-push-action@master
-        with:
-          directory: "."
-          github_token: ${{ secrets.TOKEN }}
+      # - name: GitHub Push
+      #   uses: ad-m/github-push-action@master
+      #   with:
+      #     directory: "."
+      #     github_token: ${{ secrets.TOKEN }}
