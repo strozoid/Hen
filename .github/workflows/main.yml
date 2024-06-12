@@ -27,7 +27,7 @@ jobs:
 
       - name: Set date variable
         run: |
-          echo "date=$(date +'%Y-%m-%d %H:%M:$S')" >> $GITHUB_ENV
+          echo "date=$(date +'%Y-%m-%d %H:%M')" >> $GITHUB_ENV
           
       - name: Write into Schedule
         run: |
