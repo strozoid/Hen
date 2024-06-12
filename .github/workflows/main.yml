@@ -1,0 +1,49 @@
+name: Hentai
+
+on:
+  push:
+    branches:
+      - main
+      
+  schedule:
+    - cron: "1 0,12 * * *"
+
+jobs:
+  auto_commit:
+    runs-on: ubuntu-latest
+    steps:       
+      - uses: actions/checkout@v4      
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Fetch Waifu Images
+        run: |
+          # Download H images
+          curl -s https://api.waifu.im/search?included_tags=hentai | jq -r '.images[0].url' > hentai_url.txt
+          img_url=$(cat hentai_url.txt)
+          img_name=$(basename $img_url)
+          curl -s -o pics/hentai/$img_name $img_url
+
+      - name: Set date variable
+        run: |
+          echo "date=$(date +'%Y-%m-%d %H:%M:$S')" >> $GITHUB_ENV
+          
+      - name: Write into Schedule
+        run: |
+          echo $date > Schedule
+          
+      - name: Commit Changes & rm .txt
+        run: |
+          rm -f hentai_url.txt
+          git config --local user.email "${{ secrets.EMAIL }}"
+          git config --local user.name "strozoid"
+          git add -A
+          
+          git commit -m "Commit Hentai"
+          
+      - name: GitHub Push
+        uses: ad-m/github-push-action@master
+        with:
+          directory: "."
+          github_token: ${{ secrets.TOKEN }}
